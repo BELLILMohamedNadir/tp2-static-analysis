@@ -20,51 +20,54 @@
 
 ### 1️⃣ Installation
 
-Cloner le dépôt
+```bash
+# Cloner le dépôt
 git clone https://github.com/BELLILMohamedNadir/tp2-static-analysis.git
 cd tp2-static-analysis
 
-Compiler le projet
+# Compiler le projet
 mvn clean install
-
-text
+```
 
 ### 2️⃣ Vérifier les prérequis
 
-java -version # Java 11+ requis
-mvn -version # Maven 3.6+ requis
-dot -V # Graphviz (pour visualisation)
-
-text
+```bash
+java -version  # Java 11+ requis
+mvn -version   # Maven 3.6+ requis
+dot -V         # Graphviz (pour visualisation)
+```
 
 ### 3️⃣ Lancer les outils
 
 **TP1 - Analyse Statique**
-Analyseur de métriques
+
+```bash
+# Analyseur de métriques
 mvn exec:java -Dexec.mainClass=com.tp.tp1.gui.AnalyzerGUI
 
-Graphe d'appels
+# Graphe d'appels
 mvn exec:java -Dexec.mainClass=com.tp.tp1.callgraph.CallGraphGUI
-
-text
+```
 
 **TP2 - Compréhension (JDT)**
-Graphe de couplage
+
+```bash
+# Graphe de couplage
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.CouplingAnalyzerGUI
 
-Détection de modules
+# Détection de modules
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.ModuleAnalyzerGUI
-
-text
+```
 
 **TP2 - Compréhension (Spoon)**
-Couplage Spoon
+
+```bash
+# Couplage Spoon
 mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI
 
-Modules Spoon
+# Modules Spoon
 mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI
-
-text
+```
 
 ---
 
@@ -84,9 +87,9 @@ text
 
 #### Utilisation
 
+```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp1.gui.AnalyzerGUI
-
-text
+```
 
 ---
 
@@ -103,9 +106,9 @@ text
 
 #### Utilisation
 
+```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp1.callgraph.CallGraphGUI
-
-text
+```
 
 ---
 
@@ -124,9 +127,9 @@ text
 
 #### Utilisation
 
+```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.CouplingAnalyzerGUI
-
-text
+```
 
 ---
 
@@ -143,9 +146,9 @@ text
 
 #### Utilisation
 
+```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.ModuleAnalyzerGUI
-
-text
+```
 
 ---
 
@@ -158,15 +161,17 @@ text
 **Analyse comportementale basée sur les invocations de méthodes**
 
 ##### Fonctionnalités
+
 - 🔗 Détection des appels de méthodes uniquement
 - 📊 Graphe de couplage Spoon
 - 📈 **35 relations** détectées (vs 38 pour JDT)
 - 📁 Export `docs/coupling-spoon.png`
 
 ##### Utilisation
-mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI
 
-text
+```bash
+mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI
+```
 
 ---
 
@@ -175,15 +180,17 @@ text
 **Identification de modules via clustering avec données Spoon**
 
 ##### Fonctionnalités
+
 - 🌳 Clustering basé sur invocations Spoon
 - 📊 Dendrogramme Spoon
 - 🔍 Seuil CP ajustable
 - 📁 Export `docs/spoon-dendrogram.png`
 
 ##### Utilisation
-mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI
 
-text
+```bash
+mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI
+```
 
 ---
 
@@ -215,38 +222,41 @@ text
 ### Installer Graphviz
 
 **Ubuntu/Debian**
-sudo apt install graphviz
 
-text
+```bash
+sudo apt install graphviz
+```
 
 **macOS**
-brew install graphviz
 
-text
+```bash
+brew install graphviz
+```
 
 **Windows**
-choco install graphviz
 
-text
+```bash
+choco install graphviz
+```
 
 ### Compiler
 
+```bash
 mvn clean install
-
-text
+```
 
 ---
 
 ## 🧪 Tests
 
-Tous les tests
+```bash
+# Tous les tests
 mvn test
 
-Tests spécifiques
+# Tests spécifiques
 mvn test -Dtest=CouplingAnalyzerTest
 mvn test -Dtest=SpoonCouplingAnalyzerTest
-
-text
+```
 
 **Résultats** : ✅ 30 tests réussis
 
@@ -254,30 +264,30 @@ text
 
 ## 🏗️ Structure du Projet
 
+```
 tp-static-analysis/
 ├── src/main/java/com/tp/
-│ ├── tp1/ ← TP1 : Analyse Statique
-│ │ ├── analyzer/ ← Métriques
-│ │ ├── callgraph/ ← Graphe d'appels
-│ │ └── gui/ ← Interfaces JavaFX
-│ │
-│ └── tp2/ ← TP2 : Compréhension
-│ ├── analyzer/ ← Couplage JDT
-│ ├── clustering/ ← Clustering hiérarchique
-│ ├── model/ ← Modèles de données
-│ ├── modules/ ← Détection modules
-│ ├── graph/ ← Export DOT
-│ ├── visualization/ ← Dendrogrammes
-│ ├── gui/ ← GUI JDT
-│ └── spoon/ ← Analyse Spoon
-│ ├── analyzer/
-│ └── gui/
+│   ├── tp1/                    ← TP1 : Analyse Statique
+│   │   ├── analyzer/           ← Métriques
+│   │   ├── callgraph/          ← Graphe d'appels
+│   │   └── gui/                ← Interfaces JavaFX
+│   │
+│   └── tp2/                    ← TP2 : Compréhension
+│       ├── analyzer/           ← Couplage JDT
+│       ├── clustering/         ← Clustering hiérarchique
+│       ├── model/              ← Modèles de données
+│       ├── modules/            ← Détection modules
+│       ├── graph/              ← Export DOT
+│       ├── visualization/      ← Dendrogrammes
+│       ├── gui/                ← GUI JDT
+│       └── spoon/              ← Analyse Spoon
+│           ├── analyzer/
+│           └── gui/
 │
-├── src/test/java/ ← Tests JUnit 5
-├── docs/ ← Graphes générés
+├── src/test/java/              ← Tests JUnit 5
+├── docs/                       ← Graphes générés
 └── README.md
-
-text
+```
 
 ---
 
@@ -311,6 +321,6 @@ Projet académique - HAI913I - Compréhension et Restructuration de Logiciels
 ---
 
 <p align="center">
-  <strong>Développé pour HAI913I</strong><br>
+  <strong>Développé avec ☕ pour HAI913I</strong><br>
   <sub>Université de Montpellier - 2025</sub>
 </p>
