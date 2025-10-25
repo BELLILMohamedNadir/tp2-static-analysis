@@ -321,6 +321,6 @@ Projet académique - HAI913I - Compréhension et Restructuration de Logiciels
 ---
 
 <p align="center">
-  <strong>Développé avec ☕ pour HAI913I</strong><br>
+  <strong>Développé pour HAI913I</strong><br>
   <sub>Université de Montpellier - 2025</sub>
 </p>
