@@ -1,0 +1,36 @@
+package com.tp.tp1.metrics;
+
+import com.tp.tp1.metrics.analyzer.CodeAnalyzer;
+import com.tp.tp1.metrics.analyzer.ClassInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+class CodeAnalyzerTest {
+    
+    private CodeAnalyzer analyzer;
+    
+    @TempDir
+    Path tempDir;
+    
+    @BeforeEach
+    void setUp() {
+        analyzer = new CodeAnalyzer();
+    }
+    
+    @Test
+    void testAnalyzerInitialization() {
+        assertNotNull(analyzer);
+    }
+    
+    @Test
+    void testAnalyzeProject() {
+        String projectPath = tempDir.toString();
+        List<ClassInfo> classes = analyzer.analyzeProject(projectPath);
+        
+        assertNotNull(classes);
+    }
+}
