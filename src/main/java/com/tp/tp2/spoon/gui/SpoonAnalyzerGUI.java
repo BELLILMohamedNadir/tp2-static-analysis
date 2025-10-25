@@ -47,7 +47,7 @@ public class SpoonAnalyzerGUI extends Application {
         VBox header = new VBox(15);
         header.setPadding(new Insets(20));
         header.setStyle("-fx-background-color: #E8E8E8;");
-        Label title = new Label("🥄 Analyseur Spoon - Exo 1 + 2");
+        Label title = new Label("🥄 Analyseur Spoon");
         title.setFont(Font.font("System", FontWeight.BOLD, 24));
         title.setStyle("-fx-text-fill: #333333;");
         Label subtitle = new Label("TP2 Exercice 3 - Couplage + Clustering avec Spoon");

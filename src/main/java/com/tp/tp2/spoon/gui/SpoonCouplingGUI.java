@@ -171,8 +171,8 @@ public class SpoonCouplingGUI extends Application {
                 currentGraph.computeCouplingMetrics();
                 CouplingGraphExporter exporter = new CouplingGraphExporter();
                 new File("docs").mkdirs();
-                exporter.exportToDot(currentGraph, "docs/coupling-graph.dot");
-                exporter.generateImage("docs/coupling-graph.dot", "docs/coupling-graph.png");
+                exporter.exportToDot(currentGraph, "docs/coupling-spoon.dot");
+                exporter.generateImage("docs/coupling-spoon.dot", "docs/coupling-spoon.png");
                 return null;
             }
         };
@@ -204,7 +204,7 @@ public class SpoonCouplingGUI extends Application {
 
     private void load() {
         try {
-            File f = new File("docs/coupling-graph.png");
+            File f = new File("docs/coupling-spoon.png");
             if (f.exists()) {
                 imageView.setImage(new Image(new FileInputStream(f)));
                 graphBox.getChildren().remove(placeholderPane);
