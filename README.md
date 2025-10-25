@@ -513,5 +513,5 @@ Projet académique développé dans le cadre du cours **HAI913I - Compréhension
 
 <p align="center">
   <strong>Développé avec ☕ pour HAI913I - Compréhension et Restructuration de Logiciels</strong><br>
-  <sub>Université de Montpellier - 2024</sub>
+  <sub>Université de Montpellier - 2025</sub>
 </p>
