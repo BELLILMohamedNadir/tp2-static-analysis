@@ -1,442 +1,517 @@
-# 📊 TP1 & TP2 - Advanced Static Analysis & Software Comprehension
+# 📊 TP1 & TP2 - Analyse Statique de Code Java
 
-> Comprehensive Java static analysis toolkit with Eclipse JDT & Spoon frameworks + Modern JavaFX interfaces
+> Suite complète d'outils d'analyse statique avec Eclipse JDT et Spoon + Interfaces JavaFX modernes
 
 [![Java](https://img.shields.io/badge/Java-11+-orange.svg)](https://www.oracle.com/java/)
 [![JavaFX](https://img.shields.io/badge/JavaFX-17-blue.svg)](https://openjfx.io/)
 [![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)](https://maven.apache.org/)
 [![JDT](https://img.shields.io/badge/Eclipse_JDT-3.32-purple.svg)](https://www.eclipse.org/jdt/)
 [![Spoon](https://img.shields.io/badge/Spoon-10.4-green.svg)](https://spoon.gforge.inria.fr/)
-[![Tests](https://img.shields.io/badge/tests-30%20passed-brightgreen.svg)](https://junit.org/junit5/)
+[![Tests](https://img.shields.io/badge/tests-30%20réussis-brightgreen.svg)](https://junit.org/junit5/)
 
-Complete static analysis suite combining **metrics calculation**, **call graph analysis**, **coupling detection**, **hierarchical clustering**, and **modularization** — developed for **HAI913I - Software Comprehension and Restructuring** course.
+**Suite d'analyse statique** combinant calcul de métriques, graphes d'appels, détection de couplage, clustering hiérarchique et modularisation.
+
+📚 **Développé pour** : HAI913I - Compréhension et Restructuration de Logiciels  
+🎓 **Formation** : Master 2 Génie Logiciel - Université de Montpellier
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Démarrage Rapide
+
+### 1️⃣ Installation
 
 ```bash
-# Clone & Build
-git clone https://github.com/BELLILMohamedNadir/tp-static-analysis.git
+# Cloner le dépôt
+git clone https://github.com/BELLILMohamedNadir/tp2-static-analysis.git
 cd tp-static-analysis
+
+# Compiler le projet
 mvn clean install
+```
 
-# Run TP1 Tools
-mvn exec:java -Dexec.mainClass=com.tp.tp1.gui.AnalyzerGUI          # Code Metrics
-mvn exec:java -Dexec.mainClass=com.tp.tp1.callgraph.CallGraphGUI   # Call Graph
+### 2️⃣ Vérifier les prérequis
 
-# Run TP2 Tools (JDT)
-mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.CouplingAnalyzerGUI  # Coupling Graph
-mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.ModuleAnalyzerGUI    # Module Detection
+```bash
+java -version  # Java 11+ requis
+mvn -version   # Maven 3.6+ requis
+dot -V         # Graphviz (pour visualisation)
+```
 
-# Run TP2 Tools (Spoon)
-mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI  # Spoon Coupling
-mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI  # Spoon Modules
+### 3️⃣ Lancer les outils
+
+**TP1 - Analyse Statique**
+```bash
+# Analyseur de métriques
+mvn exec:java -Dexec.mainClass=com.tp.tp1.gui.AnalyzerGUI
+
+# Graphe d'appels
+mvn exec:java -Dexec.mainClass=com.tp.tp1.callgraph.CallGraphGUI
+```
+
+**TP2 - Compréhension (JDT)**
+```bash
+# Graphe de couplage
+mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.CouplingAnalyzerGUI
+
+# Détection de modules
+mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.ModuleAnalyzerGUI
+```
+
+**TP2 - Compréhension (Spoon)**
+```bash
+# Couplage Spoon
+mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI
+
+# Modules Spoon
+mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI
 ```
 
 ---
 
-## 📝 TP1: Static Code Analysis
+## 📝 TP1 : Analyse Statique de Code
 
-### Exercise 1: Code Metrics Analyzer
-**Computes 13 comprehensive software metrics from Java source code**
+### 📊 Exercice 1 : Analyseur de Métriques
 
-#### Features
-- 📊 Project statistics: classes, methods, lines, attributes
-- 📈 Quality metrics: methods/class, lines/method, attributes/class
-- 🏆 Top 10% complex classes detection
-- 📦 Package-level distribution analysis
-- 🎨 Modern JavaFX interface with real-time visualization
+**Objectif** : Calculer 13 métriques logicielles à partir du code source Java
 
-#### Usage
+#### Fonctionnalités
+
+- 📈 **Statistiques globales** : nombre de classes, méthodes, lignes de code, attributs
+- 📊 **Métriques de qualité** : 
+  - Nombre moyen de méthodes par classe
+  - Nombre moyen de lignes par méthode
+  - Nombre moyen d'attributs par classe
+- 🏆 **Analyse de complexité** : identification des 10% de classes les plus complexes
+- 📦 **Distribution** : analyse par package
+- 🎨 **Interface moderne** : visualisation temps réel avec JavaFX
+
+#### Comment l'utiliser ?
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp1.gui.AnalyzerGUI
-# Browse → Select folder → Analyze → View metrics
 ```
 
-#### Metrics Computed
-| Category | Metrics |
-|----------|---------|
-| **Size** | Total classes, methods, LOC, attributes |
-| **Averages** | Methods/class, LOC/method, Attributes/class |
-| **Complexity** | Top 10% complex classes by method count |
+**Étapes** : Parcourir → Sélectionner dossier → Analyser → Visualiser les métriques
+
+#### Métriques calculées
+
+| Catégorie | Métriques |
+|-----------|-----------|
+| **Volume** | Total classes, total méthodes, total lignes, total attributs |
+| **Moyennes** | Méthodes/classe, Lignes/méthode, Attributs/classe |
+| **Qualité** | Classes dans le top 10% (complexité) |
+| **Distribution** | Répartition par package |
 
 ---
 
-### Exercise 2: Call Graph Builder
-**Builds and visualizes method invocation graphs**
+### 🌐 Exercice 2 : Graphe d'Appels
 
-#### Features
-- 🌐 Complete call graph construction (AST-based)
-- 📊 Entry points detection (never called methods)
-- 🍃 Leaf methods identification (terminal operations)
-- 🖼️ Graphviz visualization with PNG export
-- 📄 DOT format export for further analysis
-- 🎨 Integrated JavaFX viewer
+**Objectif** : Construire et visualiser les graphes d'invocations de méthodes
 
-#### Usage
+#### Fonctionnalités
+
+- 🔍 **Construction complète** : analyse AST pour détecter tous les appels
+- 📍 **Points d'entrée** : méthodes jamais appelées (API publique)
+- 🍃 **Méthodes feuilles** : méthodes terminales sans appels sortants
+- 🖼️ **Visualisation Graphviz** : export PNG haute qualité
+- 📄 **Export DOT** : format standard pour traitements ultérieurs
+- 🎨 **Viewer intégré** : visualisation dans l'interface JavaFX
+
+#### Comment l'utiliser ?
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp1.callgraph.CallGraphGUI
-# Browse → Analyze & Visualize → View graph in UI
 ```
 
-#### Graph Statistics Example
-```
-=== CALL GRAPH STATISTICS ===
-Total Methods  : 19    ← Nodes in graph
-Total Calls    : 13    ← Edges (method invocations)
+**Étapes** : Parcourir → Analyser & Visualiser → Explorer le graphe
 
-Entry Points   : 18    ← External API/unused methods
-Leaf Methods   : 6     ← Terminal operations
+#### Exemple de résultats
+
+```
+=== STATISTIQUES DU GRAPHE D'APPELS ===
+Nombre de méthodes    : 19 ← Nœuds du graphe
+Nombre d'appels       : 13 ← Arêtes (invocations)
+
+Points d'entrée       : 18 ← Méthodes non appelées
+Méthodes feuilles     :  6 ← Opérations terminales
 ```
 
 ---
 
-## 🔗 TP2: Software Comprehension
+## 🔗 TP2 : Compréhension de Logiciels
 
-### Exercise 1: Coupling Graph Analyzer (JDT)
-**Analyzes class coupling relationships with Eclipse JDT**
+### 🔗 Exercice 1 : Analyseur de Couplage (JDT)
 
-#### Features
-- 🔗 Coupling graph construction (all dependency types)
-- 📊 Coupling metrics calculation (normalized weights)
-- 🎯 Top coupling relationships ranking
-- 🖼️ Visual graph with weighted edges
-- 📈 38 relations detected from sample project
+**Objectif** : Analyser les relations de couplage entre classes avec Eclipse JDT
 
-#### Usage
+#### Fonctionnalités
+
+- 🔗 **Graphe de couplage** : tous types de dépendances détectés
+  - Variables de types
+  - Paramètres de méthodes
+  - Types de retour
+  - Relations d'héritage
+- 📊 **Métriques normalisées** : calcul de poids de couplage pondérés
+- 🎯 **Classement** : top des relations les plus fortes
+- 🖼️ **Visualisation** : graphe avec arêtes pondérées
+- 📈 **Statistiques** : 38 relations détectées (projet exemple)
+
+#### Comment l'utiliser ?
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.CouplingAnalyzerGUI
-# Browse → Analyze & Visualize → View coupling graph
 ```
 
-#### Coupling Metrics
+**Étapes** : Parcourir → Analyser & Visualiser → Explorer le graphe de couplage
+
+#### Exemple de couplages détectés
+
 ```
-ComplexClass → PrintStream  (0.3158)  ← Strong coupling
-Application  → PrintStream  (0.1842)  
-Main         → PrintStream  (0.1316)
-Main         → ComplexClass (0.1053)
+Top Couplages (poids normalisés) :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ComplexClass → PrintStream    : 0.3158 ⚠️  Fort
+Application  → PrintStream    : 0.1842
+Main         → PrintStream    : 0.1316
+Main         → ComplexClass   : 0.1053
 ```
 
 ---
 
-### Exercise 2: Module Identification (JDT)
-**Hierarchical clustering for module detection**
+### 🌳 Exercice 2 : Identification de Modules (JDT)
 
-#### Features
-- 🌳 Hierarchical clustering (agglomerative)
-- 📊 Dendrogram generation and visualization
-- 🔍 Module extraction at configurable coupling percentage (CP)
-- 📦 Automatic module membership assignment
-- 🖼️ Graphviz dendrogram rendering
+**Objectif** : Détecter des modules logiques via clustering hiérarchique
 
-#### Usage
+#### Fonctionnalités
+
+- 🌳 **Clustering hiérarchique** : algorithme agglomératif
+- 📊 **Dendrogramme** : visualisation de la hiérarchie de clustering
+- 🔍 **Seuil CP configurable** : Coupling Percentage ajustable
+- 📦 **Modules automatiques** : attribution des classes aux modules
+- 🖼️ **Export Graphviz** : dendrogramme au format PNG
+
+#### Comment l'utiliser ?
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.gui.ModuleAnalyzerGUI
-# Browse → Set CP threshold → Analyze → View modules + dendrogram
 ```
 
-#### Module Detection
-- **CP = 0.5** → 2 modules (coarse-grained)
-- **CP = 0.7** → 4 modules (fine-grained)
-- **Dendrogram** shows hierarchical structure
+**Étapes** : Parcourir → Définir seuil CP → Analyser → Visualiser modules + dendrogramme
+
+#### Influence du seuil CP
+
+| Seuil CP | Granularité | Résultat |
+|----------|-------------|----------|
+| **0.3 - 0.5** | Grossière | 2-3 modules larges |
+| **0.5 - 0.7** | Moyenne | 3-5 modules moyens |
+| **0.7 - 0.9** | Fine | 5+ petits modules |
+
+**Exemple** :
+- CP = 0.5 → **2 modules** détectés (architecture macro)
+- CP = 0.7 → **4 modules** détectés (séparation fine)
 
 ---
 
-### Exercise 3: Spoon-Based Analysis
-**Alternative analysis using Spoon metamodel**
+### 🥄 Exercice 3 : Analyse avec Spoon
 
-#### Spoon Coupling Analyzer
+**Objectif** : Analyse alternative utilisant le métamodèle Spoon
+
+#### Analyseur de Couplage Spoon
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonCouplingGUI
-# Browse → Analyze & Visualize → Compare with JDT results
 ```
 
-#### Spoon Module Analyzer
+#### Analyseur de Modules Spoon
+
 ```bash
 mvn exec:java -Dexec.mainClass=com.tp.tp2.spoon.gui.SpoonAnalyzerGUI
-# Browse → Set CP → Analyze → View modules
 ```
 
-#### JDT vs Spoon Comparison
-| Framework | Relations | Detection Method | Metrics |
-|-----------|-----------|------------------|---------|
-| **Eclipse JDT** | 38 | All dependencies (variables, params, returns, inheritance) | ✅ Full |
-| **Spoon** | 35 | Method invocations only | ✅ Focused |
+#### 🆚 Comparaison JDT vs Spoon
 
-**Key Differences:**
-- JDT detects **structural dependencies** (type references)
-- Spoon detects **behavioral dependencies** (method calls)
-- Both produce valid coupling graphs with different granularity ✅
+| Critère | Eclipse JDT | Spoon |
+|---------|-------------|-------|
+| **Relations détectées** | 38 | 35 |
+| **Méthode** | Toutes dépendances | Invocations uniquement |
+| **Type détection** | Structurelle | Comportementale |
+| **Granularité** | Variables, params, retours, héritage | Appels de méthodes |
+| **Avantages** | Vue complète des dépendances | Focus sur interactions réelles |
+
+**Différences clés** :
+
+✅ **JDT** détecte les **dépendances structurelles** (références de types)  
+✅ **Spoon** détecte les **dépendances comportementales** (appels effectifs)  
+✅ Les deux approches sont **complémentaires** et produisent des graphes valides
+
+**Conclusion** : Les différences sont **normales et attendues** - elles reflètent deux perspectives d'analyse complémentaires !
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Installation et Configuration
 
-### Prerequisites
+### Prérequis
+
 ```bash
-java -version    # Java 11+ required
-mvn -version     # Maven 3.6+ required
-dot -V           # Graphviz (for graph visualization)
+java -version  # Java 11+ requis
+mvn -version   # Maven 3.6+ requis
+dot -V         # Graphviz (pour visualisation)
 ```
 
-### Install Graphviz
+### Installer Graphviz
+
+**Ubuntu/Debian**
 ```bash
-# Ubuntu/Debian
 sudo apt install graphviz
+```
 
-# macOS
+**macOS**
+```bash
 brew install graphviz
+```
 
-# Windows
+**Windows (avec Chocolatey)**
+```bash
 choco install graphviz
 ```
 
-### Build Project
+**Vérification**
+```bash
+dot -V
+# Sortie attendue : dot - graphviz version 2.43.0 (ou supérieur)
+```
+
+### Compiler le Projet
+
 ```bash
 mvn clean install
-# ✅ Compiles all modules + runs tests
+```
+
+**Résultat attendu** :
+```
+[INFO] BUILD SUCCESS
+[INFO] Total time: 15.234 s
+✅ Compilation réussie
+✅ 30 tests exécutés avec succès
 ```
 
 ---
 
-## 🧪 Testing
+## 🧪 Tests
+
+### Lancer tous les tests
 
 ```bash
-# Run all tests
 mvn test
+```
 
-# Individual test suites
+### Suites de tests individuelles
+
+```bash
+# Tests TP1
 mvn test -Dtest=CallGraphBuilderTest
+
+# Tests TP2 (JDT)
 mvn test -Dtest=CouplingAnalyzerTest
+mvn test -Dtest=ModuleIdentifierTest
+mvn test -Dtest=HierarchicalClusteringTest
+
+# Tests TP2 (Spoon)
 mvn test -Dtest=SpoonCouplingAnalyzerTest
 ```
 
-**Test Results:**
+### Résultats des Tests
+
 ```
-✅ CallGraphBuilderTest         : 5 tests PASSED
-✅ CouplingAnalyzerTest          : 3 tests PASSED
-✅ ModuleIdentifierTest          : 1 test PASSED
-✅ CallRelationTest              : 3 tests PASSED
-✅ ClassCouplingTest             : 4 tests PASSED
-✅ CouplingGraphTest             : 7 tests PASSED
-✅ HierarchicalClusteringTest    : 1 test PASSED
-✅ CouplingGraphExporterTest     : 3 tests PASSED
-✅ SpoonCouplingAnalyzerTest     : 3 tests PASSED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎉 ALL 30 TESTS PASSED!
+✅ CallGraphBuilderTest           : 5 tests RÉUSSIS
+✅ CouplingAnalyzerTest            : 3 tests RÉUSSIS
+✅ ModuleIdentifierTest            : 1 test RÉUSSI
+✅ CallRelationTest                : 3 tests RÉUSSIS
+✅ ClassCouplingTest               : 4 tests RÉUSSIS
+✅ CouplingGraphTest               : 7 tests RÉUSSIS
+✅ HierarchicalClusteringTest      : 1 test RÉUSSI
+✅ CouplingGraphExporterTest       : 3 tests RÉUSSIS
+✅ SpoonCouplingAnalyzerTest       : 3 tests RÉUSSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 TOTAL : 30 TESTS RÉUSSIS !
 ```
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Structure du Projet
 
 ```
 tp-static-analysis/
+│
 ├── src/main/java/com/tp/
-│   ├── tp1/                        # TP1: Static Analysis
-│   │   ├── analyzer/               # Code metrics engine
+│   │
+│   ├── tp1/                          ← TP1 : Analyse Statique
+│   │   ├── analyzer/                 ← Moteur de calcul de métriques
 │   │   │   ├── CodeAnalyzer.java
 │   │   │   ├── ClassInfo.java
 │   │   │   └── MethodInfo.java
-│   │   ├── callgraph/              # Call graph builder
+│   │   │
+│   │   ├── callgraph/                ← Constructeur de graphe d'appels
 │   │   │   ├── CallGraphBuilder.java
 │   │   │   ├── CallGraphNode.java
 │   │   │   └── CallGraphGUI.java
-│   │   └── gui/                    # JavaFX interfaces
+│   │   │
+│   │   └── gui/                      ← Interfaces JavaFX
 │   │       └── AnalyzerGUI.java
 │   │
-│   └── tp2/                        # TP2: Software Comprehension
-│       ├── analyzer/               # JDT coupling analyzer
+│   └── tp2/                          ← TP2 : Compréhension de Logiciels
+│       │
+│       ├── analyzer/                 ← Analyseur de couplage JDT
 │       │   └── CouplingAnalyzer.java
-│       ├── clustering/             # Hierarchical clustering
+│       │
+│       ├── clustering/               ← Clustering hiérarchique
 │       │   ├── HierarchicalClustering.java
 │       │   └── DendrogramNode.java
-│       ├── model/                  # Data model
+│       │
+│       ├── model/                    ← Modèle de données
 │       │   ├── CouplingGraph.java
 │       │   ├── ClassCoupling.java
 │       │   └── CallRelation.java
-│       ├── modules/                # Module detection
+│       │
+│       ├── modules/                  ← Détection de modules
 │       │   ├── ModuleIdentifier.java
 │       │   └── Module.java
-│       ├── graph/                  # Graph export (DOT)
+│       │
+│       ├── graph/                    ← Export graphe (DOT)
 │       │   └── CouplingGraphExporter.java
-│       ├── visualization/          # Dendrogram export
+│       │
+│       ├── visualization/            ← Export dendrogramme
 │       │   └── DendrogramExporter.java
-│       ├── gui/                    # JDT GUI tools
+│       │
+│       ├── gui/                      ← Outils GUI JDT
 │       │   ├── CouplingAnalyzerGUI.java
 │       │   └── ModuleAnalyzerGUI.java
-│       └── spoon/                  # Spoon-based analysis
+│       │
+│       └── spoon/                    ← Analyse basée Spoon
 │           ├── analyzer/
 │           │   └── SpoonCouplingAnalyzer.java
 │           └── gui/
 │               ├── SpoonCouplingGUI.java
 │               └── SpoonAnalyzerGUI.java
 │
-├── src/test/java/com/tp/           # JUnit 5 test suites
-├── docs/                           # Generated graphs
-│   ├── coupling-graph.dot
-│   └── coupling-graph.png
-├── pom.xml                         # Maven configuration
-└── README.md                       # This file
+├── src/test/java/com/tp/             ← Suites de tests JUnit 5
+│
+├── docs/                             ← Graphes générés
+├── pom.xml                           ← Configuration Maven
+└── README.md                         ← Ce fichier
 ```
 
 ---
 
-## 🛠️ Technologies
+## 🛠️ Technologies Utilisées
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Java** | 11+ | Core language |
-| **JavaFX** | 17.0.2 | Modern GUI framework |
-| **Eclipse JDT** | 3.32.0 | AST parsing & analysis |
-| **Spoon** | 10.4.0 | Metamodel-based analysis |
-| **JUnit 5** | 5.10.0 | Unit testing |
-| **Graphviz** | 2.43.0 | Graph visualization |
-| **Maven** | 3.6+ | Build automation |
-
----
-
-## 📚 Key Concepts
-
-### Coupling Metrics
-**Normalized coupling weight** between classes A and B:
-```
-Coupling(A,B) = Relations(A,B) / TotalRelations
-```
-
-### Hierarchical Clustering
-Agglomerative clustering process:
-1. Start: Each class = 1 cluster
-2. Merge closest clusters iteratively
-3. Stop at desired CP (Coupling Percentage) threshold
-
-### Module Identification
-Extract modules at **CP threshold**:
-- **Low CP (0.3-0.5)** → Few large modules
-- **High CP (0.7-0.9)** → Many small modules
+| Technologie | Version | Usage |
+|-------------|---------|-------|
+| **Java** | 11+ | Langage de programmation principal |
+| **JavaFX** | 17.0.2 | Framework GUI moderne et réactif |
+| **Eclipse JDT** | 3.32.0 | Parsing AST et analyse de code |
+| **Spoon** | 10.4.0 | Analyse par métamodèle |
+| **JUnit 5** | 5.10.0 | Framework de tests unitaires |
+| **Graphviz** | 2.43.0 | Visualisation et export de graphes |
+| **Maven** | 3.6+ | Gestion de build et dépendances |
 
 ---
 
-## 📊 Sample Analysis Results
+## 📚 Concepts Clés
 
-### Project: `tp1_part2.samples` (6 classes)
+### 🔢 Métriques de Couplage
 
-#### JDT Analysis
-```
-Classes: 6  |  Relations: 38
-Top Coupling: ComplexClass ↔ PrintStream (0.316)
-Modules (CP=0.5): 2 detected
-```
+**Formule du poids de couplage normalisé** entre classes A et B :
 
-#### Spoon Analysis
 ```
-Classes: 6  |  Relations: 35
-Top Coupling: ComplexClass ↔ PrintStream (0.343)
-Modules (CP=0.5): 2 detected
+Couplage(A,B) = Relations(A,B) / RelationsTotales
 ```
 
-**Differences are EXPECTED** — demonstrates framework comparison! ✅
+**Exemple** :
+- ComplexClass → PrintStream : 12 relations / 38 total = **0.3158**
+- Application → PrintStream : 7 relations / 38 total = **0.1842**
+
+### 🌳 Clustering Hiérarchique
+
+**Algorithme agglomératif** :
+
+1. **Initialisation** : Chaque classe = 1 cluster distinct
+2. **Itération** : Fusion des 2 clusters les plus proches (couplage maximal)
+3. **Arrêt** : Atteinte du seuil CP (Coupling Percentage) désiré
+
+**Distance entre clusters** : Inverse du couplage moyen
+
+### 📦 Identification de Modules
+
+**Extraction selon le seuil CP** :
+
+- **CP bas (0.3 - 0.5)** :
+  - Peu de modules
+  - Modules larges et généraux
+  - Vue architecturale macro
+  
+- **CP moyen (0.5 - 0.7)** :
+  - Nombre équilibré de modules
+  - Granularité intermédiaire
+  
+- **CP élevé (0.7 - 0.9)** :
+  - Nombreux petits modules
+  - Granularité fine
+  - Séparation maximale des responsabilités
 
 ---
 
-## 🎨 GUI Features
+## 🎨 Interfaces Graphiques
 
-All tools feature modern JavaFX interfaces with:
-- 📁 Project browser
-- 📊 Real-time statistics
-- 🖼️ Embedded graph visualization
-- 💾 DOT/PNG export capabilities
+Tous les outils disposent d'**interfaces JavaFX modernes** avec :
 
----
-
-## 🚀 Advanced Usage
-
-### Manual Graph Generation
-```bash
-# Generate coupling graph DOT file
-mvn exec:java -Dexec.mainClass=com.tp.tp2.Main \
-  -Dexec.args="/path/to/project"
-
-# Render with Graphviz
-dot -Tpng docs/coupling-graph.dot -o docs/coupling-graph.png
-xdg-open docs/coupling-graph.png
-```
-
-### Customize Clustering Threshold
-Modify `CP` parameter in GUI or programmatically:
-```java
-ModuleIdentifier identifier = new ModuleIdentifier();
-List<Module> modules = identifier.identifyModules(graph, 0.7); // CP=70%
-```
+- 📁 **Navigateur de projets** : sélection intuitive de dossiers
+- 📊 **Statistiques temps réel** : affichage dynamique des métriques
+- 🖼️ **Visualisation intégrée** : graphes directement dans l'interface
+- 💾 **Export multi-format** : DOT, PNG, CSV
+- 🎨 **Design moderne** : interface claire et ergonomique
+- ⚡ **Performances** : traitement rapide des projets Java
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 Auteur
 
 **Mohamed Nadir BELLIL**  
-🎓 Master 2 Software Engineering  
-🏛️ University of Montpellier  
+🎓 Master 2 Génie Logiciel  
+🏛️ Université de Montpellier  
 📧 [GitHub](https://github.com/BELLILMohamedNadir)
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contribution
 
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a Pull Request
+Les contributions sont les bienvenues ! Pour contribuer :
 
----
-
-## 📜 License
-
-Academic project for HAI913I course.
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/amelioration`)
+3. Commit les changements (`git commit -m 'Ajout fonctionnalité X'`)
+4. Push vers la branche (`git push origin feature/amelioration`)
+5. Ouvrir une Pull Request
 
 ---
 
-**⭐ Star this repo if you find it useful!**
+## 📜 Licence
+
+Projet académique développé dans le cadre du cours **HAI913I - Compréhension et Restructuration de Logiciels**.
+
+---
+
+## 📖 Ressources Complémentaires
+
+- [Documentation Eclipse JDT](https://www.eclipse.org/jdt/)
+- [Documentation Spoon](https://spoon.gforge.inria.fr/)
+- [Guide JavaFX](https://openjfx.io/)
+- [Langage DOT Graphviz](https://graphviz.org/doc/info/lang.html)
+- [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
+
+---
+
 
 <p align="center">
-  <strong>Made with ☕ for HAI913I - Software Comprehension & Restructuring</strong>
+  <strong>Développé avec ☕ pour HAI913I - Compréhension et Restructuration de Logiciels</strong><br>
+  <sub>Université de Montpellier - 2024</sub>
 </p>
-
----
-
-## 🔧 Troubleshooting
-
-### JavaFX not found
-```bash
-# Add JavaFX to classpath
-export PATH_TO_FX=/path/to/javafx-sdk/lib
-mvn javafx:run
-```
-
-### Graphviz not installed
-```bash
-# Check installation
-dot -V
-
-# If missing, install (see Installation section above)
-```
-
-### Tests failing
-```bash
-# Clean rebuild
-mvn clean install
-```
-
----
-
-## 📖 Additional Resources
-
-- [Eclipse JDT Documentation](https://www.eclipse.org/jdt/)
-- [Spoon Framework](https://spoon.gforge.inria.fr/)
-- [JavaFX Documentation](https://openjfx.io/)
-- [Graphviz DOT Language](https://graphviz.org/doc/info/lang.html)
-
----
-
-**End of README** 🎯
