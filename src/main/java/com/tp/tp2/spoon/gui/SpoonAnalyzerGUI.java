@@ -88,7 +88,7 @@ public class SpoonAnalyzerGUI extends Application {
         resultsArea = new TextArea();
         resultsArea.setEditable(false);
         resultsArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 11px;");
-        resultsArea.setText("En attente d'analyse...\n\nFramework: Spoon\n\nExo 1: Graphe de couplage ✓\nExo 2: Clustering hiérarchique ✓");
+        resultsArea.setText("En attente d'analyse...\n\nFramework: Spoon\n\nExercice 2: Identification de modules");
         VBox.setVgrow(resultsArea, Priority.ALWAYS);
         statsBox.getChildren().addAll(statsLabel, resultsArea);
         graphBox = new VBox(10);
@@ -158,7 +158,7 @@ public class SpoonAnalyzerGUI extends Application {
                 
                 // Afficher les résultats
                 StringBuilder sb = new StringBuilder();
-                sb.append("=== ANALYSE SPOON (EXO 1 + 2) ===\n\n");
+                sb.append("=== ANALYSE SPOON - MODULES (EXO 2) ===\n\n");
                 sb.append("Framework : Spoon 10.4.2\n");
                 sb.append("Projet    : ").append(new File(path).getName()).append("\n\n");
                 sb.append("--- Résultats ---\n");

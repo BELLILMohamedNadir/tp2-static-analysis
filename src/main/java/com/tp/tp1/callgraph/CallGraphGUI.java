@@ -5,49 +5,45 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import java.io.File;
+import java.io.*;
 import java.nio.file.*;
+import java.util.List;
 import java.util.Map;
 
-/**
- * JavaFX GUI for Call Graph Analyzer
- */
 public class CallGraphGUI extends Application {
-    
+
     private TextField pathField;
-    private TextArea resultsArea;
     private TextArea statsArea;
+    private ImageView graphImageView;
     private CallGraphBuilder builder;
     private Label statusLabel;
-    
+    private ScrollPane imageScrollPane;
+    private VBox graphBox;
+    private StackPane placeholderPane;
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Call Graph Analyzer - Exercise 2");
-        
         builder = new CallGraphBuilder();
         
-        // Main layout
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(15));
         root.setStyle("-fx-background-color: #f5f5f5;");
         
-        // Top: Header
         root.setTop(createHeader());
-        
-        // Center: Content
         root.setCenter(createContent());
-        
-        // Bottom: Status
         root.setBottom(createFooter());
         
-        Scene scene = new Scene(root, 1000, 700);
+        Scene scene = new Scene(root, 1200, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    
+
     private VBox createHeader() {
         VBox header = new VBox(10);
         header.setAlignment(Pos.CENTER);
@@ -56,22 +52,19 @@ public class CallGraphGUI extends Application {
         Label title = new Label("📞 Call Graph Analyzer");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
         
-        Label subtitle = new Label("Build method call graphs from Java source code");
+        Label subtitle = new Label("Build and visualize method call graphs from Java source code");
         subtitle.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
         
         header.getChildren().addAll(title, subtitle);
         return header;
     }
-    
+
     private VBox createContent() {
         VBox content = new VBox(15);
-        
-        // Control panel
         content.getChildren().add(createControlPanel());
         
-        // Split view: Stats + Graph
         SplitPane splitPane = new SplitPane();
-        splitPane.setDividerPositions(0.3);
+        splitPane.setDividerPositions(0.25);
         
         // Left: Statistics
         VBox statsBox = new VBox(10);
@@ -86,27 +79,38 @@ public class CallGraphGUI extends Application {
         
         statsBox.getChildren().addAll(statsLabel, statsArea);
         
-        // Right: Call Graph
-        VBox graphBox = new VBox(10);
-        Label graphLabel = new Label("🔗 Call Graph");
+        // Right: Graph Image
+        graphBox = new VBox(10);
+        Label graphLabel = new Label("🖼️ Call Graph Visualization");
         graphLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         
-        resultsArea = new TextArea();
-        resultsArea.setEditable(false);
-        resultsArea.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
-        resultsArea.setText("=== CALL GRAPH ===\n\nNo results to display.");
-        VBox.setVgrow(resultsArea, Priority.ALWAYS);
+        graphImageView = new ImageView();
+        graphImageView.setPreserveRatio(true);
+        graphImageView.setSmooth(true);
         
-        graphBox.getChildren().addAll(graphLabel, resultsArea);
+        imageScrollPane = new ScrollPane();
+        imageScrollPane.setContent(graphImageView);
+        imageScrollPane.setFitToWidth(true);
+        imageScrollPane.setFitToHeight(true);
+        imageScrollPane.setStyle("-fx-background-color: white;");
+        VBox.setVgrow(imageScrollPane, Priority.ALWAYS);
+        
+        // Placeholder
+        Label placeholderLabel = new Label("No graph to display\n\nAnalyze a project first");
+        placeholderLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #95a5a6;");
+        placeholderPane = new StackPane(placeholderLabel);
+        placeholderPane.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 1;");
+        VBox.setVgrow(placeholderPane, Priority.ALWAYS);
+        
+        graphBox.getChildren().addAll(graphLabel, placeholderPane);
         
         splitPane.getItems().addAll(statsBox, graphBox);
         VBox.setVgrow(splitPane, Priority.ALWAYS);
         
         content.getChildren().add(splitPane);
-        
         return content;
     }
-    
+
     private HBox createControlPanel() {
         HBox controlPanel = new HBox(10);
         controlPanel.setPadding(new Insets(10));
@@ -121,27 +125,22 @@ public class CallGraphGUI extends Application {
         pathField.setPrefWidth(500);
         HBox.setHgrow(pathField, Priority.ALWAYS);
         
-        Button browseBtn = new Button("📁 Browse");
+        Button browseBtn = new Button("Browse");
         browseBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
         browseBtn.setOnAction(e -> browseFolder());
         
-        Button analyzeBtn = new Button("🔍 Analyze");
+        Button analyzeBtn = new Button("Analyze & Visualize");
         analyzeBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;");
-        analyzeBtn.setOnAction(e -> analyzeProject());
+        analyzeBtn.setOnAction(e -> analyzeAndVisualize());
         
-        Button exportBtn = new Button("💾 Export DOT");
-        exportBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-weight: bold;");
-        exportBtn.setOnAction(e -> exportDot());
-        
-        Button clearBtn = new Button("🗑️ Clear");
+        Button clearBtn = new Button("Clear");
         clearBtn.setStyle("-fx-background-color: #95a5a6; -fx-text-fill: white;");
         clearBtn.setOnAction(e -> clear());
         
-        controlPanel.getChildren().addAll(pathLabel, pathField, browseBtn, analyzeBtn, exportBtn, clearBtn);
-        
+        controlPanel.getChildren().addAll(pathLabel, pathField, browseBtn, analyzeBtn, clearBtn);
         return controlPanel;
     }
-    
+
     private HBox createFooter() {
         HBox footer = new HBox();
         footer.setPadding(new Insets(10, 0, 0, 0));
@@ -153,19 +152,19 @@ public class CallGraphGUI extends Application {
         footer.getChildren().add(statusLabel);
         return footer;
     }
-    
+
     private void browseFolder() {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select Java Project Folder");
-        
         File selectedDir = chooser.showDialog(pathField.getScene().getWindow());
         if (selectedDir != null) {
             pathField.setText(selectedDir.getAbsolutePath());
             updateStatus("Folder selected: " + selectedDir.getName());
         }
     }
-    
-    private void analyzeProject() {
+
+    @SuppressWarnings("unchecked")
+    private void analyzeAndVisualize() {
         String projectPath = pathField.getText();
         
         if (projectPath.isEmpty()) {
@@ -181,28 +180,37 @@ public class CallGraphGUI extends Application {
         updateStatus("Analyzing...");
         
         try {
+            // Build call graph
             builder = new CallGraphBuilder();
             builder.analyzeProject(projectPath);
             
-            displayResults();
+            // Display statistics
+            displayStatistics();
+            
+            // Generate and display image
+            updateStatus("Generating visualization...");
+            generateAndDisplayImage();
+            
             updateStatus("✅ Analysis complete!");
             
         } catch (Exception e) {
-            showAlert("Analysis Error", "Error during analysis: " + e.getMessage());
+            showAlert("Error", "Error during analysis:\n" + e.getClass().getName() + ": " + e.getMessage());
             updateStatus("❌ Analysis failed");
+            e.printStackTrace();
         }
     }
-    
-    private void displayResults() {
-        // Display statistics
+
+    @SuppressWarnings("unchecked")
+    private void displayStatistics() {
         Map<String, Object> stats = builder.getStatistics();
         StringBuilder statsSb = new StringBuilder();
-        statsSb.append("═══ STATISTICS ═══\n\n");
-        statsSb.append("Total Methods  : ").append(stats.get("totalNodes")).append("\n");
-        statsSb.append("Total Calls    : ").append(stats.get("totalEdges")).append("\n\n");
         
-        statsSb.append("─── Entry Points ───\n");
-        java.util.List<?> entryPoints = (java.util.List<?>) stats.get("entryPoints");
+        statsSb.append("=== STATISTICS ===\n\n");
+        statsSb.append("Total Methods : ").append(stats.get("totalNodes")).append("\n");
+        statsSb.append("Total Calls   : ").append(stats.get("totalEdges")).append("\n\n");
+        
+        statsSb.append("--- Entry Points ---\n");
+        List<String> entryPoints = (List<String>) stats.get("entryPoints");
         if (entryPoints.isEmpty()) {
             statsSb.append("(none)\n");
         } else {
@@ -212,8 +220,8 @@ public class CallGraphGUI extends Application {
             }
         }
         
-        statsSb.append("\n─── Leaf Methods ───\n");
-        java.util.List<?> leafMethods = (java.util.List<?>) stats.get("leafMethods");
+        statsSb.append("\n--- Leaf Methods ---\n");
+        List<String> leafMethods = (List<String>) stats.get("leafMethods");
         if (leafMethods.isEmpty()) {
             statsSb.append("(none)\n");
         } else {
@@ -224,46 +232,71 @@ public class CallGraphGUI extends Application {
         }
         
         statsArea.setText(statsSb.toString());
-        
-        // Display call graph
-        resultsArea.setText(builder.toGraphFormat());
     }
-    
-    private void exportDot() {
-        if (builder.getNodes().isEmpty()) {
-            showAlert("No Data", "Please analyze a project first.");
-            return;
-        }
-        
+
+    private void generateAndDisplayImage() {
         try {
+            // Create docs directory
+            File docsDir = new File("docs");
+            if (!docsDir.exists()) {
+                docsDir.mkdirs();
+            }
+            
+            // Export DOT file
             String dotContent = builder.toDotFormat();
-            Path dotFile = Paths.get("callgraph.dot");
+            Path dotFile = Paths.get("docs/call-graph.dot");
             Files.writeString(dotFile, dotContent);
             
-            showInfo("Export Successful", 
-                    "DOT file saved: " + dotFile.toAbsolutePath() + "\n\n" +
-                    "To visualize:\n" +
-                    "dot -Tpng callgraph.dot -o callgraph.png");
+            // Generate PNG with Graphviz
+            Path pngFile = Paths.get("docs/call-graph.png");
+            ProcessBuilder pb = new ProcessBuilder("dot", "-Tpng", dotFile.toString(), "-o", pngFile.toString());
+            Process process = pb.start();
+            int exitCode = process.waitFor();
             
-            updateStatus("✅ Exported to callgraph.dot");
+            if (exitCode != 0) {
+                showAlert("Graphviz Error", "Failed to generate image.\n\nMake sure Graphviz is installed:\nsudo apt install graphviz");
+                return;
+            }
+            
+            // Load and display image
+            if (Files.exists(pngFile)) {
+                Image image = new Image(pngFile.toUri().toString());
+                graphImageView.setImage(image);
+                
+                // Replace placeholder with image
+                if (graphBox.getChildren().contains(placeholderPane)) {
+                    graphBox.getChildren().remove(placeholderPane);
+                    graphBox.getChildren().add(imageScrollPane);
+                }
+                
+                updateStatus("✅ Visualization generated: " + pngFile.toAbsolutePath());
+            }
             
         } catch (Exception e) {
-            showAlert("Export Error", "Failed to export: " + e.getMessage());
+            showAlert("Visualization Error", "Failed to generate visualization:\n" + e.getMessage());
+            e.printStackTrace();
         }
     }
-    
+
     private void clear() {
         pathField.clear();
-        resultsArea.setText("=== CALL GRAPH ===\n\nNo results to display.");
         statsArea.setText("No analysis yet...\n\nSelect a project folder and click Analyze.");
+        graphImageView.setImage(null);
+        
+        // Restore placeholder
+        if (!graphBox.getChildren().contains(placeholderPane)) {
+            graphBox.getChildren().remove(imageScrollPane);
+            graphBox.getChildren().add(placeholderPane);
+        }
+        
         builder = new CallGraphBuilder();
         updateStatus("Cleared");
     }
-    
+
     private void updateStatus(String message) {
         statusLabel.setText(message);
     }
-    
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -271,15 +304,7 @@ public class CallGraphGUI extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-    
+
     public static void main(String[] args) {
         launch(args);
     }
